@@ -1,18 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Put widgets to your screen!"
+        android:textColor="@color/colorSpringGreen"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:padding="20dp"
+        android:layout_gravity="center_horizontal"
+        />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btn_update_widgets"
+        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:textSize="15sp"
+        android:layout_marginTop="65dp"
+        android:background="@drawable/button_default"
+        android:text="Fix widgets"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use this fix in case your widgets are not working!"
+        android:textColor="@color/colorSpringGreen"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+    <Button
+        android:id="@+id/btn_request_adding_widgets"
+        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:textSize="15sp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/button_default"
+        android:text="Open widgets"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use this fix in case your widgets are not working!"
+        android:textColor="@color/colorSpringGreen"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adview_main_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/test_ad_id"
+        />
+
+
+</LinearLayout>
