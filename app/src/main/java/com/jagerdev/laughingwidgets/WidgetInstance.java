@@ -14,12 +14,15 @@ import java.util.Random;
  */
 public class WidgetInstance implements MediaPlayer.OnCompletionListener
 {
-       public WidgetInstance(int widgetID, Context context, Intent intent, MediaStoppedHandler mediaStoppedHandler, String[] widgetIds)
+       public WidgetInstance(int widgetID, Context context, Intent intent, MediaStoppedHandler mediaStoppedHandler, String[] widgetIds, int[] soundResources, int calmResourceId, int laughingResourceId)
        {
               this.widgetID = widgetID;
               this.context = context;
               this.intent = intent;
               this.mediaStoppedHandler = mediaStoppedHandler;
+              this.soundResources = soundResources;
+              this.calmResourceId = calmResourceId;
+              this.laughingResourceId = laughingResourceId;
               setUsedIds(widgetIds);
        }
 
@@ -29,15 +32,11 @@ public class WidgetInstance implements MediaPlayer.OnCompletionListener
        private int widgetID;
        private static Random rnd = new Random();
        private MediaStoppedHandler mediaStoppedHandler;
+       private int[] soundResources;
 
-       private static final int[] SOUND_RESOURCES = {R.raw.risitas1, R.raw.risitas2, R.raw.risitas3, R.raw.risitas4, R.raw.risitas5, R.raw.risitas6, R.raw.risitas7, R.raw.risitas8, R.raw.risitas9, R.raw.risitas10};
        private int[] usedIds;
 
-
-       public static int[] getSoundResources()
-       {
-              return SOUND_RESOURCES;
-       }
+       private int calmResourceId, laughingResourceId;
 
        private void setUsedIds(String[] ids)
        {
@@ -50,8 +49,8 @@ public class WidgetInstance implements MediaPlayer.OnCompletionListener
 
        private int getRandomSoundID()
        {
-              if (usedIds.length == 0) return SOUND_RESOURCES[rnd.nextInt(SOUND_RESOURCES.length)];
-              return SOUND_RESOURCES[usedIds[rnd.nextInt(usedIds.length)]];
+              if (usedIds.length == 0) return soundResources[rnd.nextInt(soundResources.length)];
+              return soundResources[usedIds[rnd.nextInt(usedIds.length)]];
        }
 
        private void updateWidget(Intent intent, int imageID)
@@ -59,15 +58,15 @@ public class WidgetInstance implements MediaPlayer.OnCompletionListener
               int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
               Log.d(WidgetInstance.class.getName(), String.format("Widget instance is being updated: %s", widgetId));
               AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-              RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.risitas_laugh_widget);
-              remoteViews.setImageViewResource(R.id.risitas_img, imageID);
+              RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.laugh_widget);
+              remoteViews.setImageViewResource(R.id.laugh_widget_img, imageID);
               appWidgetManager.updateAppWidget(widgetId, remoteViews);
        }
 
        private void mediaStopped()
        {
               Log.d(WidgetInstance.class.getName(), String.format("Playing stopped for widget: %s", widgetID));
-              updateWidget(intent, R.drawable.risitas_serious);
+              updateWidget(intent, calmResourceId);
               if (player != null)
               {
                      player.reset();
@@ -90,7 +89,7 @@ public class WidgetInstance implements MediaPlayer.OnCompletionListener
 
        public void playMedia()
        {
-              updateWidget(intent, R.drawable.risitas_laugh);
+              updateWidget(intent, laughingResourceId);
               int soundID = getRandomSoundID();
               player = MediaPlayer.create(context, soundID);
               player.setOnCompletionListener(this);

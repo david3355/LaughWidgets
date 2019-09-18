@@ -4,11 +4,11 @@
                 android:padding="@dimen/widget_margin">
 
     <ImageView
-        android:id="@+id/risitas_img"
+        android:id="@+id/laugh_widget_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:src="@drawable/risitas_serious"
+        android:src="@drawable/laugh_notif"
         />
 
 </LinearLayout>

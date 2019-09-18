@@ -4,18 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.jagerdev.laughingwidgets.configurators.BaseWidgetConfigActivity;
+import com.jagerdev.laughingwidgets.widget_providers.RisitasLaughWidget;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -71,10 +73,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (appWidgetManager != null && appWidgetManager.isRequestPinAppWidgetSupported()) {
                 Toast.makeText(this, "Choose a widget, and pull it to your homescreen!", Toast.LENGTH_LONG).show();
-                Intent callbackIntent = new Intent(this, RisitasLaughWidgetConfigureActivity.class);
+                Intent callbackIntent = new Intent(this, BaseWidgetConfigActivity.class);
                 PendingIntent successCallback = PendingIntent.getActivity(
                         this, 0, callbackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+//                RemoteViews appWindgetPreview = new RemoteViews(this.getPackageName(), R.layout.laugh_widget);
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable(AppWidgetManager.EXTRA_APPWIDGET_PREVIEW, appWindgetPreview);
                 appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
             }
         }

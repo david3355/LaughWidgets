@@ -18,6 +18,8 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.jagerdev.laughingwidgets.widget_providers.RisitasLaughWidget;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +31,8 @@ public class PlayerService extends Service implements MediaStoppedHandler
        }
 
        private final static int NOTIFICATION_ID = 255;
-       private final static String CHANNEL_ID = "risitas_notifications";
+       private final static String CHANNEL_ID = "laughing_widget_notifications";
+       public static final String KEY_WIDGET_CLASS = "widget_class";
        private static List<WidgetInstance> widgetInstances = new ArrayList<>();
 
        private BroadcastReceiver screenOffReceiver = new BroadcastReceiver()
@@ -55,33 +58,36 @@ public class PlayerService extends Service implements MediaStoppedHandler
        @Override
        public int onStartCommand(Intent intent, int flags, int startId)
        {
-              Log.i(PlayerService.class.getName(), "PlayerService is started");
-              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-              {
-                     Log.d(PlayerService.class.getName(), "Starting foreground");
-                     startForeground(NOTIFICATION_ID, buildNotification());
+              if (intent != null) {
+                     Log.i(PlayerService.class.getName(), "PlayerService is started");
+                     int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+                     String widgetClass = intent.getStringExtra(KEY_WIDGET_CLASS);
+                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            Log.d(PlayerService.class.getName(), "Starting foreground");
+                            startForeground(NOTIFICATION_ID, buildNotification(BaseLaughWidgetProvider.getWidgetName(widgetClass)));
+                     }
+                     operate(intent, widgetId, widgetClass);
+                     Log.d(PlayerService.class.getName(), "Operation finished in PlayerService");
               }
-              operate(intent);
-              Log.d(PlayerService.class.getName(), "Operation finished in PlayerService");
               return super.onStartCommand(intent, flags, startId);
        }
 
-       private Notification buildNotification()
+       private Notification buildNotification(String laughWidgetName)
        {
               NotificationManager notificationManager =
                       (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
               if (notificationManager == null) return null;
 
               NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this.getApplicationContext(), CHANNEL_ID);
-              notifBuilder.setContentTitle("Risitas is laughing")
-                      .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.risitas_laugh))
-                      .setSmallIcon(R.drawable.risitas_laugh)
+              notifBuilder.setContentTitle(String.format("%s is laughing", laughWidgetName))
+                      .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.laugh_notif))
+                      .setSmallIcon(R.drawable.laugh_notif)
                       .setStyle(new NotificationCompat.BigTextStyle());
 
               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
               {
                      NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                             "Risitas laugh channel",
+                             "Laughing widget channel",
                              NotificationManager.IMPORTANCE_MIN);
                      notificationManager.createNotificationChannel(channel);
                      notifBuilder.setChannelId(CHANNEL_ID);
@@ -98,23 +104,23 @@ public class PlayerService extends Service implements MediaStoppedHandler
               int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, RisitasLaughWidget.class));
               for (int widgetId : ids)
               {
-                     RisitasLaughWidget.updateAppWidget(context, appWidgetManager, widgetId);
+                     RisitasLaughWidget.updateAppWidget(context, appWidgetManager, widgetId, R.layout.laugh_widget, R.id.laugh_widget_img);
               }
               return ids;
        }
 
-       private void operate(Intent intent)
+       private void operate(Intent intent, int widgetId, String widgetClass)
        {
-              if (intent == null) return;
-
-              int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
               Bundle bundle = intent.getExtras();
               String[] laughIds = bundle.getStringArray(RisitasLaughWidget.LAUGH_IDS);
               WidgetInstance widget = getWidgetByID(widgetId);
               if (widget == null)
               {
                      Log.d(PlayerService.class.getName(), String.format("New widget instance is created: %s", widgetId));
-                     widget = new WidgetInstance(widgetId, getApplicationContext(), intent, this, laughIds);
+                     int[] soundResources = BaseLaughWidgetProvider.getWidgetSoundResources(widgetClass);
+                     int calmResourceId = BaseLaughWidgetProvider.getCalmResourceId(widgetClass);
+                     int laughingResourceId = BaseLaughWidgetProvider.getLaughingResourceId(widgetClass);
+                     widget = new WidgetInstance(widgetId, getApplicationContext(), intent, this, laughIds, soundResources, calmResourceId, laughingResourceId);
                      widgetInstances.add(widget);
               }
               if (!widget.isPlaying())

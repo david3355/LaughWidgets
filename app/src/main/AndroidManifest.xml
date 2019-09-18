@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/joker"
+        android:icon="@drawable/laugh_notif"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/joker"
+        android:roundIcon="@drawable/laugh_notif"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".RisitasLaughWidget">
+        <receiver android:name=".widget_providers.RisitasLaughWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -34,7 +34,23 @@
                 android:resource="@xml/risitas_laugh_widget_info"/>
         </receiver>
 
-        <activity android:name=".RisitasLaughWidgetConfigureActivity">
+        <receiver android:name=".widget_providers.JokerLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/joker_laugh_widget_info"/>
+        </receiver>
+
+        <activity android:name=".configurators.RisitasWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".configurators.JokerWidgetConfigActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
