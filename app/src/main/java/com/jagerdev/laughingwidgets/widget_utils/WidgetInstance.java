@@ -1,4 +1,4 @@
-package com.jagerdev.laughingwidgets;
+package com.jagerdev.laughingwidgets.widget_utils;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.jagerdev.laughingwidgets.R;
 
 import java.util.Random;
 

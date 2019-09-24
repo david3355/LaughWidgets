@@ -10,18 +10,37 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RemoteViews;
+import android.widget.CheckBox;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.jagerdev.laughingwidgets.configurators.BaseWidgetConfigActivity;
-import com.jagerdev.laughingwidgets.widget_providers.RisitasLaughWidget;
+import com.jagerdev.laughingwidgets.configurators.AddWidgetState;
+import com.jagerdev.laughingwidgets.configurators.Configurator;
+import com.jagerdev.laughingwidgets.widget_providers.BaseLaughWidgetProvider;
+import com.jagerdev.laughingwidgets.widget_utils.CustomWidgetPickReceiver;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
 
-    Button btnUpdateWidgets, btnRequestAddingWidgets;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddWidgetState {
+
+    Button btnUpdateWidgets;
+
+    ImageView chosenImage;
+    GridView gridFaces;
+    TextView txtChoseWidget, txtSelectConfig, txtWidgetInfo;
+    ScrollView scrollSounds;
+    CheckBox checkAllLaughs;
+    LinearLayout panelLaughs;
+    Button addButton;
+
+    private Configurator configurator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,8 +58,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnUpdateWidgets = findViewById(R.id.btn_update_widgets);
         btnUpdateWidgets.setOnClickListener(this);
 
-        btnRequestAddingWidgets = findViewById(R.id.btn_request_adding_widgets);
-        btnRequestAddingWidgets.setOnClickListener(this);
+        chosenImage = findViewById(R.id.img_chosen_image);
+        gridFaces = findViewById(R.id.grid_faces);
+
+        txtChoseWidget = findViewById(R.id.txt_chose_widget);
+        checkAllLaughs = findViewById(R.id.check_all_laughs);
+        panelLaughs = findViewById(R.id.panel_laughs);
+        txtSelectConfig = findViewById(R.id.txt_select_config);
+        txtWidgetInfo = findViewById(R.id.txt_widget_info);
+        scrollSounds = findViewById(R.id.scroll_sounds);
+        addButton = findViewById(R.id.add_button);
+        addButton.setOnClickListener(this);
+
+        configurator = new Configurator(this, this, null,  null,
+                chosenImage,  gridFaces,  txtChoseWidget,  txtSelectConfig, txtWidgetInfo,
+                scrollSounds,  checkAllLaughs,  panelLaughs);
+        configurator.showWidgetFaces();
     }
 
     void updateAllWidgets()
@@ -57,32 +90,76 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_update_widgets:
                 updateAllWidgets();
                 break;
-            case R.id.btn_request_adding_widgets:
+            case R.id.add_button:
                 requestAppWidget();
                 break;
         }
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        configurator.stopMediaPlayer();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        configurator.releaseMediaPlayer();
+    }
+
     private void requestAppWidget() {
+        configurator.stopMediaPlayer();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             AppWidgetManager appWidgetManager =
                     this.getSystemService(AppWidgetManager.class);
 
-            ComponentName myProvider = new ComponentName(this, RisitasLaughWidget.class);
+            String widgetClassId = configurator.getWidgetClass();
+            ComponentName myProvider = new ComponentName(this, BaseLaughWidgetProvider.getWidgetClass(widgetClassId));
+
 
             if (appWidgetManager != null && appWidgetManager.isRequestPinAppWidgetSupported()) {
                 Toast.makeText(this, "Choose a widget, and pull it to your homescreen!", Toast.LENGTH_LONG).show();
-                Intent callbackIntent = new Intent(this, BaseWidgetConfigActivity.class);
-                PendingIntent successCallback = PendingIntent.getActivity(
+                Intent callbackIntent = new Intent(this, CustomWidgetPickReceiver.class);
+                callbackIntent.putExtra("customFace", true);
+                callbackIntent.putExtra(PlayerService.KEY_WIDGET_CLASS, widgetClassId);
+                callbackIntent.putStringArrayListExtra(CustomWidgetPickReceiver.KEY_CHOSEN_INDEXES, new ArrayList<>(configurator.getChosenSoundIndexes()));
+                PendingIntent successCallback = PendingIntent.getBroadcast(
                         this, 0, callbackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-//                RemoteViews appWindgetPreview = new RemoteViews(this.getPackageName(), R.layout.laugh_widget);
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable(AppWidgetManager.EXTRA_APPWIDGET_PREVIEW, appWindgetPreview);
                 appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
             }
+            else Toast.makeText(this, "Widget pinning is not supported by your launcher.", Toast.LENGTH_SHORT).show();
         }
+        else Toast.makeText(this, "Widget pinning is available only after Android Oreo. Please use your launcher's widget picker.", Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void atLeaseOneCheckBoxEnabled()
+    {
+        addButton.setEnabled(true);
+    }
+
+    @Override
+    public void noCheckBoxIsEnabled()
+    {
+        addButton.setEnabled(false);
+    }
+
+    @Override
+    public void onWidgetFaceChosen()
+    {
+        addButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onChoosingFaceWidget()
+    {
+        addButton.setVisibility(View.GONE);
+    }
+
 
 }

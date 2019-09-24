@@ -18,7 +18,10 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.jagerdev.laughingwidgets.widget_providers.BaseLaughWidgetProvider;
 import com.jagerdev.laughingwidgets.widget_providers.RisitasLaughWidget;
+import com.jagerdev.laughingwidgets.widget_utils.MediaStoppedHandler;
+import com.jagerdev.laughingwidgets.widget_utils.WidgetInstance;
 
 import java.util.ArrayList;
 import java.util.Iterator;

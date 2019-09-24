@@ -1,11 +1,11 @@
 package com.jagerdev.laughingwidgets.widget_providers;
 
-import com.jagerdev.laughingwidgets.BaseLaughWidgetProvider;
 import com.jagerdev.laughingwidgets.R;
 
 public class JokerLaughWidget extends BaseLaughWidgetProvider
 {
        public static final String WIDGET_CLASS = "joker";
+       public static final int WIDGET_CLASS_ID = 10002;
        public static final int[] SOUND_RESOURCES = {R.raw.joker_laugh_1, R.raw.joker_laugh_2};
 
        @Override
@@ -26,6 +26,11 @@ public class JokerLaughWidget extends BaseLaughWidgetProvider
        @Override
        public String getWidgetName() {
               return "Joker";
+       }
+
+       @Override
+       public int getWidgetClassId() {
+              return WIDGET_CLASS_ID;
        }
 }
 

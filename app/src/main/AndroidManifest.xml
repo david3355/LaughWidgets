@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jagerdev.laughingwidgets">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/laugh_notif"
@@ -11,11 +9,6 @@
         android:roundIcon="@drawable/laugh_notif"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id"/>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,43 +17,69 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".widget_providers.RisitasLaughWidget">
+        <activity android:name=".configurators.CustomWidgetConfigActivity">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/risitas_laugh_widget_info"/>
-        </receiver>
-
-        <receiver android:name=".widget_providers.JokerLaughWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/joker_laugh_widget_info"/>
-        </receiver>
+        </activity>
 
         <activity android:name=".configurators.RisitasWidgetConfigActivity">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
         <activity android:name=".configurators.JokerWidgetConfigActivity">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id" />
+
+        <receiver
+            android:name=".widget_utils.CustomWidgetPickReceiver"
+            android:enabled="true"
+            android:exported="false"></receiver>
+
+        <receiver android:name=".widget_providers.CustomLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/custom_laugh_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget_providers.JokerLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/joker_laugh_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget_providers.RisitasLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/risitas_laugh_widget_info" />
+        </receiver>
 
         <service
             android:name=".PlayerService"
             android:enabled="true"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
     </application>
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 </manifest>

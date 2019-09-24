@@ -1,4 +1,4 @@
-package com.jagerdev.laughingwidgets;
+package com.jagerdev.laughingwidgets.widget_providers;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -11,9 +11,9 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.jagerdev.laughingwidgets.configurators.BaseWidgetConfigActivity;
-import com.jagerdev.laughingwidgets.widget_providers.JokerLaughWidget;
-import com.jagerdev.laughingwidgets.widget_providers.RisitasLaughWidget;
+import com.jagerdev.laughingwidgets.AndroidUtils;
+import com.jagerdev.laughingwidgets.PlayerService;
+import com.jagerdev.laughingwidgets.R;
 
 import java.util.Set;
 
@@ -41,6 +41,16 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
         return getProviderByClass(widgetClass).getWidgetName();
     }
 
+    public static int getWidgetClassId(String widgetClass)
+    {
+        return getProviderByClass(widgetClass).getWidgetClassId();
+    }
+
+    public static Class getWidgetClass(String widgetClass)
+    {
+        return getProviderByClass(widgetClass).getClass();
+    }
+
     private static BaseLaughWidgetProvider getProviderByClass(String widgetClass)
     {
         switch (widgetClass)
@@ -51,10 +61,21 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
         return null;
     }
 
+    public static String getWidgetClassByClassId(int widgetClassId)
+    {
+        switch (widgetClassId)
+        {
+            case RisitasLaughWidget.WIDGET_CLASS_ID: return RisitasLaughWidget.WIDGET_CLASS;
+            case JokerLaughWidget.WIDGET_CLASS_ID: return JokerLaughWidget.WIDGET_CLASS;
+        }
+        return null;
+    }
+
     public abstract int getCalmResourceId();
     public abstract int getLaughingResourceId();
     public abstract int[] getSoundResources();
     public abstract String getWidgetName();
+    public abstract int getWidgetClassId();
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int widgetLayoutResource, int widgetImageResource)
     {
