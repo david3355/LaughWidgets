@@ -29,6 +29,18 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".configurators.SquealerWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".configurators.MuttleyWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id" />
@@ -56,6 +68,26 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/risitas_laugh_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget_providers.SquealerLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/squealer_laugh_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget_providers.MuttleyLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/muttley_laugh_widget_info" />
         </receiver>
 
         <service

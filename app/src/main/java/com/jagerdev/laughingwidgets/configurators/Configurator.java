@@ -17,7 +17,9 @@ import com.jagerdev.laughingwidgets.widget_providers.BaseLaughWidgetProvider;
 import com.jagerdev.laughingwidgets.PlayerService;
 import com.jagerdev.laughingwidgets.R;
 import com.jagerdev.laughingwidgets.widget_providers.JokerLaughWidget;
+import com.jagerdev.laughingwidgets.widget_providers.MuttleyLaughWidget;
 import com.jagerdev.laughingwidgets.widget_providers.RisitasLaughWidget;
+import com.jagerdev.laughingwidgets.widget_providers.SquealerLaughWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,15 +54,10 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
     static
     {
         faceIds = new String[] {
-                JokerLaughWidget.WIDGET_CLASS,
                 RisitasLaughWidget.WIDGET_CLASS,
-                RisitasLaughWidget.WIDGET_CLASS,
-
                 JokerLaughWidget.WIDGET_CLASS,
-                JokerLaughWidget.WIDGET_CLASS,
-                JokerLaughWidget.WIDGET_CLASS,
-                JokerLaughWidget.WIDGET_CLASS,
-                JokerLaughWidget.WIDGET_CLASS};
+                SquealerLaughWidget.WIDGET_CLASS,
+                MuttleyLaughWidget.WIDGET_CLASS};
     }
 
     private MediaPlayer player;

@@ -57,6 +57,8 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
         {
             case RisitasLaughWidget.WIDGET_CLASS: return new RisitasLaughWidget();
             case JokerLaughWidget.WIDGET_CLASS: return new JokerLaughWidget();
+            case SquealerLaughWidget.WIDGET_CLASS: return new SquealerLaughWidget();
+            case MuttleyLaughWidget.WIDGET_CLASS: return new MuttleyLaughWidget();
         }
         return null;
     }
@@ -67,6 +69,8 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
         {
             case RisitasLaughWidget.WIDGET_CLASS_ID: return RisitasLaughWidget.WIDGET_CLASS;
             case JokerLaughWidget.WIDGET_CLASS_ID: return JokerLaughWidget.WIDGET_CLASS;
+            case SquealerLaughWidget.WIDGET_CLASS_ID: return SquealerLaughWidget.WIDGET_CLASS;
+            case MuttleyLaughWidget.WIDGET_CLASS_ID: return MuttleyLaughWidget.WIDGET_CLASS;
         }
         return null;
     }

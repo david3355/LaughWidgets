@@ -9,7 +9,7 @@ public class RisitasLaughWidget extends BaseLaughWidgetProvider {
 
     @Override
     public int getCalmResourceId() {
-        return R.drawable.risitas_serious;
+        return R.drawable.risitas;
     }
 
     @Override
