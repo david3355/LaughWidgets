@@ -28,7 +28,7 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
 
     public Configurator(Activity activityContext, AddWidgetState widgetStateChange, String activityWidgetClass, Integer appWidgetId,
                         ImageView chosenImage, GridView gridFaces, TextView txtChoseWidget, TextView txtSelectConfig, TextView txtWidgetInfo,
-                        ScrollView scrollSounds, CheckBox checkAllLaughs, LinearLayout panelLaughs)
+                        TextView txtWidgetName, ScrollView scrollSounds, CheckBox checkAllLaughs, LinearLayout panelLaughs)
     {
         this.activityContext = activityContext;
         this.widgetStateChange = widgetStateChange;
@@ -40,6 +40,7 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
         this.txtChoseWidget = txtChoseWidget;
         this.txtSelectConfig = txtSelectConfig;
         this.txtWidgetInfo = txtWidgetInfo;
+        this.txtWidgetName = txtWidgetName;
         this.scrollSounds = scrollSounds;
         this.checkAllLaughs = checkAllLaughs;
         this.panelLaughs = panelLaughs;
@@ -49,6 +50,8 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
         gridFaces.deferNotifyDataSetChanged();
         checkAllLaughs.setOnCheckedChangeListener(this);
         chosenImage.setOnClickListener(onChosenFaceClick);
+
+        facesViewShown = false;
     }
 
     static
@@ -69,13 +72,14 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
 
     private ImageView chosenImage;
     private GridView gridFaces;
-    private TextView txtChoseWidget, txtSelectConfig, txtWidgetInfo;
+    private TextView txtChoseWidget, txtSelectConfig, txtWidgetInfo, txtWidgetName;
     private ScrollView scrollSounds;
     private CheckBox checkAllLaughs;
     private LinearLayout panelLaughs;
 
     private static final int CHECKBOX_BASE_ID = 100000;
     private static String[] faceIds;
+    private boolean facesViewShown;
 
     public String getWidgetClass()
     {
@@ -123,6 +127,8 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
         int laughingResourceId = BaseLaughWidgetProvider.getLaughingResourceId(getWidgetClass());
         chosenImage.setImageResource(laughingResourceId);
 
+        txtWidgetName.setText(BaseLaughWidgetProvider.getWidgetName(getWidgetClass()));
+
         if (mAppWidgetId != null) AndroidUtils.savePrefs(activityContext, mAppWidgetId, PlayerService.KEY_WIDGET_CLASS, getWidgetClass());
 
         int i = 0;
@@ -165,6 +171,9 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
             scrollSounds.setVisibility(View.VISIBLE);
             txtSelectConfig.setVisibility(View.VISIBLE);
             widgetStateChange.onWidgetFaceChosen();
+            txtWidgetName.setText(BaseLaughWidgetProvider.getWidgetName(widgetClass));
+            txtWidgetName.setVisibility(View.VISIBLE);
+            facesViewShown = false;
         }
     };
 
@@ -184,7 +193,14 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
         checkAllLaughs.setVisibility(View.GONE);
         scrollSounds.setVisibility(View.GONE);
         txtSelectConfig.setVisibility(View.GONE);
+        txtWidgetName.setVisibility(View.GONE);
         widgetStateChange.onChoosingFaceWidget();
+        facesViewShown = true;
+    }
+
+    public boolean isFacesViewShown()
+    {
+        return facesViewShown;
     }
 
     public List<String> getChosenSoundIndexes()

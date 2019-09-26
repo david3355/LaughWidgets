@@ -31,7 +31,7 @@ public abstract class BaseWidgetConfigActivity extends Activity implements AddWi
        Button addButton;
        ImageView chosenImage;
        GridView gridFaces;
-       TextView txtChoseWidget, txtSelectConfig, txtWidgetInfo;
+       TextView txtChoseWidget, txtSelectConfig, txtWidgetInfo, txtWidgetName;
        ScrollView scrollSounds;
 
        private Configurator configurator;
@@ -105,6 +105,7 @@ public abstract class BaseWidgetConfigActivity extends Activity implements AddWi
               txtSelectConfig = findViewById(R.id.txt_select_config);
               txtWidgetInfo = findViewById(R.id.txt_widget_info);
               scrollSounds = findViewById(R.id.scroll_sounds);
+              txtWidgetName = findViewById(R.id.txt_widget_name);
 
               // Find the widget id from the intent.
               Intent intent = getIntent();
@@ -123,7 +124,7 @@ public abstract class BaseWidgetConfigActivity extends Activity implements AddWi
               }
 
               configurator = new Configurator(this, this, getSpecificWidgetClass(),  mAppWidgetId,
-                       chosenImage,  gridFaces,  txtChoseWidget,  txtSelectConfig, txtWidgetInfo,
+                       chosenImage,  gridFaces,  txtChoseWidget,  txtSelectConfig, txtWidgetInfo, txtWidgetName,
                        scrollSounds,  checkAllLaughs,  panelLaughs);
 
               configurator.initConfigActivity();

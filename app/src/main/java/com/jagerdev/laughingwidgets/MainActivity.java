@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView chosenImage;
     GridView gridFaces;
-    TextView txtChoseWidget, txtSelectConfig, txtWidgetInfo;
+    TextView txtChoseWidget, txtSelectConfig, txtWidgetInfo, txtWidgetName;
     ScrollView scrollSounds;
     CheckBox checkAllLaughs;
     LinearLayout panelLaughs;
@@ -67,11 +67,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtSelectConfig = findViewById(R.id.txt_select_config);
         txtWidgetInfo = findViewById(R.id.txt_widget_info);
         scrollSounds = findViewById(R.id.scroll_sounds);
+        txtWidgetName = findViewById(R.id.txt_widget_name);
         addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(this);
 
         configurator = new Configurator(this, this, null,  null,
-                chosenImage,  gridFaces,  txtChoseWidget,  txtSelectConfig, txtWidgetInfo,
+                chosenImage,  gridFaces,  txtChoseWidget,  txtSelectConfig, txtWidgetInfo, txtWidgetName,
                 scrollSounds,  checkAllLaughs,  panelLaughs);
         configurator.showWidgetFaces();
     }
@@ -80,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         int[] ids = PlayerService.updateAllWidgets(this);
         Toast.makeText(this, String.format("All %s widgets were updated", ids.length), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!configurator.isFacesViewShown()) configurator.showWidgetFaces();
+        else super.onBackPressed();
     }
 
     @Override
