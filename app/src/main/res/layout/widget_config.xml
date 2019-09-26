@@ -70,14 +70,18 @@ android:orientation="vertical">
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
+    android:layout_marginStart="10dp"
     android:text="Select all"
     />
 
 <ScrollView
     android:id="@+id/scroll_sounds"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="0.8">
+    android:layout_height="0dp"
+    android:layout_marginStart="15dp"
+    android:fadeScrollbars="false"
+    android:scrollbarSize="10dp"
+    android:layout_weight="1">
 
     <LinearLayout
         android:id="@+id/panel_laughs"
