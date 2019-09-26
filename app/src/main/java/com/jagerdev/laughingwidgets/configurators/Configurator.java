@@ -129,7 +129,7 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
 
         txtWidgetName.setText(BaseLaughWidgetProvider.getWidgetName(getWidgetClass()));
 
-        if (mAppWidgetId != null) AndroidUtils.savePrefs(activityContext, mAppWidgetId, PlayerService.KEY_WIDGET_CLASS, getWidgetClass());
+        if (mAppWidgetId != null) AndroidUtils.savePrefs(activityContext, mAppWidgetId, AndroidUtils.LaughPrefKeys.WIDGET_NAME, getWidgetClass());
 
         int i = 0;
         int[] widgetSoundResources = BaseLaughWidgetProvider.getWidgetSoundResources(getWidgetClass());

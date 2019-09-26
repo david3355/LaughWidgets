@@ -85,7 +85,7 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
     {
         Log.i(BaseLaughWidgetProvider.class.getName(), String.format("Widget %s is being updated", appWidgetId));
         Set<String> chosenIndexes = AndroidUtils.loadChosenIndexPrefs(context, appWidgetId);
-        String widgetClass = AndroidUtils.loadPrefs(context, appWidgetId, PlayerService.KEY_WIDGET_CLASS);
+        String widgetClass = AndroidUtils.loadPrefs(context, appWidgetId, AndroidUtils.LaughPrefKeys.WIDGET_NAME);
         if (chosenIndexes == null) return;
 
         String[] indexArray = {};
@@ -150,6 +150,7 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds)
         {
             AndroidUtils.deleteChosenIndexPrefs(context, appWidgetId);
+            AndroidUtils.deletePreferences(context, appWidgetId);
         }
     }
 
