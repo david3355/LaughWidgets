@@ -107,7 +107,7 @@ public class PlayerService extends Service implements MediaStoppedHandler
               int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, RisitasLaughWidget.class));
               for (int widgetId : ids)
               {
-                     RisitasLaughWidget.updateAppWidget(context, appWidgetManager, widgetId, R.layout.laugh_widget, R.id.laugh_widget_img);
+                     RisitasLaughWidget.updateAppWidget(context, appWidgetManager, widgetId);
               }
               return ids;
        }

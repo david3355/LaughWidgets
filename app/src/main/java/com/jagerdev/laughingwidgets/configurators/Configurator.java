@@ -236,7 +236,7 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
 
     private void playExampleLaugh(int soundID)
     {
-        Log.d(BaseWidgetConfigActivity.class.getName(), String.format("Playing example laugh sound %s", soundID));
+        Log.d(this.getClass().getName(), String.format("Playing example laugh sound %s", soundID));
         stopMediaPlayer();
         player = MediaPlayer.create(activityContext, soundID);
         player.start();

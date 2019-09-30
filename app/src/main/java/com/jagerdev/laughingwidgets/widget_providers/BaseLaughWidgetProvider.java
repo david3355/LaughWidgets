@@ -81,7 +81,7 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
     public abstract String getWidgetName();
     public abstract int getWidgetClassId();
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int widgetLayoutResource, int widgetImageResource)
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId)
     {
         Log.i(BaseLaughWidgetProvider.class.getName(), String.format("Widget %s is being updated", appWidgetId));
         Set<String> chosenIndexes = AndroidUtils.loadChosenIndexPrefs(context, appWidgetId);
@@ -92,7 +92,7 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
         indexArray = chosenIndexes.toArray(new String[0]);
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), widgetLayoutResource);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.laugh_widget);
         views.setImageViewResource(R.id.laugh_widget_img, getCalmResourceId(widgetClass));
         appWidgetManager.updateAppWidget(appWidgetId,  views);
 
@@ -110,16 +110,16 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
             PendingIntent pendingIntent;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             {
-                Log.i(PlayerService.class.getName(), "Create foreground service pending intent");
+                Log.i(BaseLaughWidgetProvider.class.getName(), "Create foreground service pending intent");
                 pendingIntent = PendingIntent.getForegroundService(context, requestcode, svc, 0);
             } else pendingIntent = PendingIntent.getService(context, requestcode, svc, 0);
 
-            views.setOnClickPendingIntent(widgetImageResource, pendingIntent);
+            views.setOnClickPendingIntent(R.id.laugh_widget_img, pendingIntent);
 
             // Instruct the widget manager to update the widget
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
-            Log.i(RisitasLaughWidget.class.getName(), String.format("Widget %s is updated", appWidgetId));
+            Log.i(BaseLaughWidgetProvider.class.getName(), String.format("Widget %s is updated", appWidgetId));
         } catch (Exception e)
         {
             Toast.makeText(context, "Failed to update widget: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -130,11 +130,11 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
-        Log.d(BaseLaughWidgetProvider.class.getName(), String.format("Updating all %s widgets", appWidgetIds.length));
+        Log.d(this.getClass().getName(), String.format("Updating all %s widgets", appWidgetIds.length));
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds)
         {
-            updateAppWidget(context, appWidgetManager, appWidgetId, R.layout.laugh_widget, R.id.laugh_widget_img);
+            updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
@@ -142,7 +142,7 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds)
     {
-        Log.d(BaseLaughWidgetProvider.class.getName(), String.format("Deleting %s widgets", appWidgetIds.length));
+        Log.d(this.getClass().getName(), String.format("Deleting %s widgets", appWidgetIds.length));
         super.onDeleted(context, appWidgetIds);
         PlayerService.deleteUnusedWidgetInstances(appWidgetIds);
 

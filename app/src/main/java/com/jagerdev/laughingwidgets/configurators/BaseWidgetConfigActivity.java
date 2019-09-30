@@ -50,7 +50,7 @@ public abstract class BaseWidgetConfigActivity extends Activity implements AddWi
 
                      // It is the responsibility of the configuration activity to update the app widget
                      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                     BaseLaughWidgetProvider.updateAppWidget(context, appWidgetManager, mAppWidgetId, R.layout.laugh_widget, R.id.laugh_widget_img);
+                     BaseLaughWidgetProvider.updateAppWidget(context, appWidgetManager, mAppWidgetId);
 
                      // Make sure we pass back the original appWidgetId
                      Intent resultValue = new Intent();
