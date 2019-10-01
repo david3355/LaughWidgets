@@ -27,13 +27,13 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/colorSpringGreen"/>
 
     <Button
         android:id="@+id/btn_update_widgets"
-        android:layout_height="50dp"
         android:layout_width="200dp"
+        android:layout_height="25dp"
         android:textSize="15sp"
         android:background="@drawable/button_default"
         android:text="Fix widgets"
@@ -47,7 +47,7 @@
         android:textColor="@color/colorSpringGreen"
         android:textStyle="bold"
         android:textSize="12sp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal"
         />
 
@@ -58,8 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             ads:adSize="BANNER"
             ads:adUnitId="@string/test_ad_id"
             />
