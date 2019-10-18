@@ -3,10 +3,12 @@ package com.jagerdev.laughingwidgets.configurators;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -14,7 +16,6 @@ import android.widget.TextView;
 
 import com.jagerdev.laughingwidgets.AndroidUtils;
 import com.jagerdev.laughingwidgets.widget_providers.BaseLaughWidgetProvider;
-import com.jagerdev.laughingwidgets.PlayerService;
 import com.jagerdev.laughingwidgets.R;
 import com.jagerdev.laughingwidgets.widget_providers.JokerLaughWidget;
 import com.jagerdev.laughingwidgets.widget_providers.MuttleyLaughWidget;
@@ -44,6 +45,7 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
         this.scrollSounds = scrollSounds;
         this.checkAllLaughs = checkAllLaughs;
         this.panelLaughs = panelLaughs;
+        this.playingId = null;
 
         FaceChooserAdapter adapter = new FaceChooserAdapter(activityContext, faceIds, onFaceChosenClick);
         gridFaces.setAdapter(adapter);
@@ -64,6 +66,7 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
     }
 
     private MediaPlayer player;
+    private Integer playingId;
 
     private Activity activityContext;
     private AddWidgetState widgetStateChange;
@@ -81,10 +84,36 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
     private static String[] faceIds;
     private boolean facesViewShown;
 
+    private static final int CHECKBOX_ID = 0;
+    private static final int IMAGE_BTN_ID = 1;
+
     public String getWidgetClass()
     {
         return widgetClass;
     }
+
+    private View.OnClickListener onLaughTestButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            ImageButton laughButton = (ImageButton) view;
+
+
+            if (playingId != null) {
+                boolean stopOnly = playingId == laughButton.getId();
+                stopMediaPlayer();
+                ImageButton playingButton = activityContext.findViewById(playingId);
+                if (playingButton != null) playingButton.setImageResource(R.drawable.start);
+                playingId = null;
+                if (stopOnly) return;
+            }
+
+            playingId = laughButton.getId();
+
+            laughButton.setImageResource(R.drawable.stop);
+            int soundId = BaseLaughWidgetProvider.getWidgetSoundResources(getWidgetClass())[laughButton.getId() - CHECKBOX_BASE_ID];
+            playExampleLaugh(soundId);
+        }
+    };
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -94,7 +123,8 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
             checkAllLaughs.setText(isChecked? "Uncheck all": "Select all");
             for (int i = 0; i < panelLaughs.getChildCount(); i++)
             {
-                CheckBox checkBox = (CheckBox) panelLaughs.getChildAt(i);
+                LinearLayout panel = (LinearLayout) panelLaughs.getChildAt(i);
+                CheckBox checkBox = (CheckBox) panel.getChildAt(CHECKBOX_ID);
                 if (checkBox.getId() != buttonView.getId())
                 {
                     checkBox.setOnCheckedChangeListener(null);
@@ -110,12 +140,6 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
                 checkAllLaughs.setOnCheckedChangeListener(null);
                 checkAllLaughs.setChecked(false);
                 checkAllLaughs.setOnCheckedChangeListener(this);
-                stopMediaPlayer();
-            }
-            else
-            {
-                int soundId = BaseLaughWidgetProvider.getWidgetSoundResources(getWidgetClass())[buttonView.getId() - CHECKBOX_BASE_ID];
-                playExampleLaugh(soundId);
             }
         }
         if(isAtLeastOneChecked()) widgetStateChange.atLeaseOneCheckBoxEnabled();
@@ -133,22 +157,29 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
 
         int i = 0;
         int[] widgetSoundResources = BaseLaughWidgetProvider.getWidgetSoundResources(getWidgetClass());
+        LayoutInflater inflater = LayoutInflater.from(activityContext);
         for(int res : widgetSoundResources)
         {
-            CheckBox laughCheckbox = new CheckBox(activityContext);
+            int id = CHECKBOX_BASE_ID + i;
+
+            View view = inflater.inflate(R.layout.laugh_instance, null, false);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(3, 5, 3, 5);
-            laughCheckbox.setLayoutParams(params);
-            laughCheckbox.setText(String.format("Laugh %s", i+1));
-            int id = CHECKBOX_BASE_ID + i;
-            i++;
-            laughCheckbox.setId(id);
+            params.setMargins(3, 5, 3, 30);
+            view.setLayoutParams(params);
+
+            CheckBox laughCheckbox = view.findViewById(R.id.check_laugh);
+            ImageButton btnLaughTest = view.findViewById(R.id.btn_laugh_test);
+
             laughCheckbox.setChecked(true);
             laughCheckbox.setOnCheckedChangeListener(this);
-            panelLaughs.addView(laughCheckbox);
+            laughCheckbox.setText(String.format("Laugh %s", i+1));
+            btnLaughTest.setId(id);
+            btnLaughTest.setOnClickListener(onLaughTestButton);
+            panelLaughs.addView(view);
+            i++;
         }
 
         checkAllLaughs.setChecked(true);
@@ -208,10 +239,12 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
         List<String> indexes = new ArrayList<>();
         for (int i = 0; i < panelLaughs.getChildCount(); i++)
         {
-            CheckBox checkBox = (CheckBox) panelLaughs.getChildAt(i);
+            LinearLayout panel = (LinearLayout) panelLaughs.getChildAt(i);
+            ImageButton button = (ImageButton) panel.getChildAt(IMAGE_BTN_ID);
+            CheckBox checkBox = (CheckBox) panel.getChildAt(CHECKBOX_ID);
             if (checkBox.getId() != checkAllLaughs.getId() && checkBox.isChecked())
             {
-                indexes.add(String.valueOf(checkBox.getId() - CHECKBOX_BASE_ID));
+                indexes.add(String.valueOf(button.getId() - CHECKBOX_BASE_ID));
             }
         }
         return indexes;
@@ -239,14 +272,27 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
         Log.d(this.getClass().getName(), String.format("Playing example laugh sound %s", soundID));
         stopMediaPlayer();
         player = MediaPlayer.create(activityContext, soundID);
+        player.setOnCompletionListener(laughPlayCompleted);
         player.start();
     }
+
+    private MediaPlayer.OnCompletionListener laughPlayCompleted = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mediaPlayer) {
+            if (playingId != null) {
+                ImageButton playingButton = activityContext.findViewById(playingId);
+                if (playingButton != null) playingButton.setImageResource(R.drawable.start);
+                playingId = null;
+            }
+        }
+    };
 
     private boolean isAtLeastOneChecked()
     {
         for (int i = 0; i < panelLaughs.getChildCount(); i++)
         {
-            CheckBox checkBox = (CheckBox) panelLaughs.getChildAt(i);
+            LinearLayout panel = (LinearLayout) panelLaughs.getChildAt(i);
+            CheckBox checkBox = (CheckBox) panel.getChildAt(CHECKBOX_ID);
             if (checkBox.isChecked()) return true;
         }
         return false;
