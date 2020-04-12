@@ -127,9 +127,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String widgetClassId = configurator.getWidgetClass();
             ComponentName myProvider = new ComponentName(this, BaseLaughWidgetProvider.getWidgetClass(widgetClassId));
 
+            String pinningNotSupportedError = "Widget pinning is not supported by your launcher. Please use your launcher's picker to put the widget to your home screen.";
 
             if (appWidgetManager != null && appWidgetManager.isRequestPinAppWidgetSupported()) {
-                Toast.makeText(this, "Choose a widget, and pull it to your homescreen!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Choose a widget, and pull it to your home screen! Or use your launcher's picker to put the widget to home screen.", Toast.LENGTH_LONG).show();
                 Intent callbackIntent = new Intent(this, CustomWidgetPickReceiver.class);
                 callbackIntent.putExtra("customFace", true);
                 callbackIntent.putExtra(PlayerService.KEY_WIDGET_CLASS, widgetClassId);
@@ -137,9 +138,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 PendingIntent successCallback = PendingIntent.getBroadcast(
                         this, 0, callbackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
+                if (!appWidgetManager.requestPinAppWidget(myProvider, null, successCallback))
+                    Toast.makeText(this, pinningNotSupportedError , Toast.LENGTH_LONG).show();
             }
-            else Toast.makeText(this, "Widget pinning is not supported by your launcher.", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(this, pinningNotSupportedError, Toast.LENGTH_LONG).show();
         }
         else Toast.makeText(this, "Widget pinning is available only after Android Oreo. Please use your launcher's widget picker.", Toast.LENGTH_LONG).show();
     }
