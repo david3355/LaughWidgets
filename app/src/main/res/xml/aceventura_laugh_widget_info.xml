@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:configure="com.jagerdev.laughingwidgets.configurators.AceVenturaWidgetConfigActivity"
+                    android:initialLayout="@layout/laugh_widget"
+                    android:minHeight="40dp"
+                    android:minWidth="30dp"
+                    android:previewImage="@drawable/aceventura_laugh"
+                    android:resizeMode="horizontal|vertical"
+                    android:updatePeriodMillis="60000"
+                    android:widgetCategory="home_screen">
+</appwidget-provider>

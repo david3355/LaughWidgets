@@ -59,6 +59,10 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
             case JokerLaughWidget.WIDGET_CLASS: return new JokerLaughWidget();
             case SquealerLaughWidget.WIDGET_CLASS: return new SquealerLaughWidget();
             case MuttleyLaughWidget.WIDGET_CLASS: return new MuttleyLaughWidget();
+            case AceVenturaLaughWidget.WIDGET_CLASS: return new AceVenturaLaughWidget();
+            case EmperorLaughWidget.WIDGET_CLASS: return new EmperorLaughWidget();
+            case DrEvilLaughWidget.WIDGET_CLASS: return new DrEvilLaughWidget();
+            case JabbaLaughWidget.WIDGET_CLASS: return new JabbaLaughWidget();
         }
         return null;
     }
@@ -71,6 +75,10 @@ public abstract class BaseLaughWidgetProvider extends AppWidgetProvider {
             case JokerLaughWidget.WIDGET_CLASS_ID: return JokerLaughWidget.WIDGET_CLASS;
             case SquealerLaughWidget.WIDGET_CLASS_ID: return SquealerLaughWidget.WIDGET_CLASS;
             case MuttleyLaughWidget.WIDGET_CLASS_ID: return MuttleyLaughWidget.WIDGET_CLASS;
+            case AceVenturaLaughWidget.WIDGET_CLASS_ID: return AceVenturaLaughWidget.WIDGET_CLASS;
+            case EmperorLaughWidget.WIDGET_CLASS_ID: return EmperorLaughWidget.WIDGET_CLASS;
+            case DrEvilLaughWidget.WIDGET_CLASS_ID: return DrEvilLaughWidget.WIDGET_CLASS;
+            case JabbaLaughWidget.WIDGET_CLASS_ID: return JabbaLaughWidget.WIDGET_CLASS;
         }
         return null;
     }

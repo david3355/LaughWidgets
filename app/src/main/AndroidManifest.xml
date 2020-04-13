@@ -41,6 +41,30 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".configurators.AceVenturaWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".configurators.EmperorWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".configurators.DrEvilWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".configurators.JabbaWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id" />
@@ -88,6 +112,46 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/muttley_laugh_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget_providers.AceVenturaLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/aceventura_laugh_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget_providers.EmperorLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/emperor_laugh_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget_providers.DrEvilLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/drevil_laugh_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget_providers.JabbaLaughWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/jabba_laugh_widget_info" />
         </receiver>
 
         <service

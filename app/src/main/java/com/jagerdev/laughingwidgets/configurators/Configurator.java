@@ -15,8 +15,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.jagerdev.laughingwidgets.AndroidUtils;
+import com.jagerdev.laughingwidgets.widget_providers.AceVenturaLaughWidget;
 import com.jagerdev.laughingwidgets.widget_providers.BaseLaughWidgetProvider;
 import com.jagerdev.laughingwidgets.R;
+import com.jagerdev.laughingwidgets.widget_providers.DrEvilLaughWidget;
+import com.jagerdev.laughingwidgets.widget_providers.EmperorLaughWidget;
+import com.jagerdev.laughingwidgets.widget_providers.JabbaLaughWidget;
 import com.jagerdev.laughingwidgets.widget_providers.JokerLaughWidget;
 import com.jagerdev.laughingwidgets.widget_providers.MuttleyLaughWidget;
 import com.jagerdev.laughingwidgets.widget_providers.RisitasLaughWidget;
@@ -62,7 +66,12 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
                 RisitasLaughWidget.WIDGET_CLASS,
                 JokerLaughWidget.WIDGET_CLASS,
                 SquealerLaughWidget.WIDGET_CLASS,
-                MuttleyLaughWidget.WIDGET_CLASS};
+                MuttleyLaughWidget.WIDGET_CLASS,
+                AceVenturaLaughWidget.WIDGET_CLASS,
+                EmperorLaughWidget.WIDGET_CLASS,
+                DrEvilLaughWidget.WIDGET_CLASS,
+                JabbaLaughWidget.WIDGET_CLASS
+        };
     }
 
     private MediaPlayer player;
@@ -226,6 +235,7 @@ public class Configurator implements CompoundButton.OnCheckedChangeListener {
         txtSelectConfig.setVisibility(View.GONE);
         txtWidgetName.setVisibility(View.GONE);
         widgetStateChange.onChoosingFaceWidget();
+        stopMediaPlayer();
         facesViewShown = true;
     }
 
